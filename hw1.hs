@@ -15,4 +15,19 @@ swapFirstAndLast :: [a] -> [a]
 swapFirstAndLast [] = error "EmptyList"
 swapFirstAndLast [x] = [x]
 swapFirstAndLast (x:xs) = (last1 xs : init1 xs) ++ [x]
+
 -- zadacha napisat' swapFirstAndLast odnoi funciei
+swfl :: [a] -> [a]
+swfl [] = error "Empty list"
+swfl [x] = [x]
+swfl (x:xs) =
+    let
+        (f, g) = sw x xs
+        sw x [y] = (y, [x])
+        sw x (y:ys) =
+            let
+                (f, g) = sw x ys
+            in
+                (f, y:g)
+    in
+        f:g
