@@ -9,6 +9,9 @@ bubbleSort1 (x:y:xs)
 bubbleSort :: (Ord a) => [a] -> [a]
 bubbleSort [] = []
 bubbleSort [x] = [x]
-bubbleSort list =
-    let temp = bubbleSort1 list
-    in bubbleSort (init temp) ++ [last temp]
+bubbleSort list
+    {-let temp = bubbleSort1 list
+    in bubbleSort (init temp) ++ [last temp]-}
+    | list == bubbleSort1 list = list
+    | otherwise = bubbleSort (bubbleSort1 list)
+
