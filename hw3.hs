@@ -31,4 +31,4 @@ halve xs = go xs xs
             in
                 (x:beg, mid, end)
         go (x:xs) [_] = ([], [x], xs)
-        go xs [] = ([], [], xs) 
+        go xs [] = ([], [], xs)
