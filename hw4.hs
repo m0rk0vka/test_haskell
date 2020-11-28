@@ -24,5 +24,5 @@ determinant x
             | c `mod` 2 == 0 = 1.0
             | otherwise = -1.0
 
-        minor x k = det (deln (drop 1 x) k)
-        deln x k = map (\ r -> (take (k) r)++(drop (k+1) r)) x
+        minor x k = det (new (drop 1 x) k)
+        new x k = map (\r -> (take (k) r)++(drop (k+1) r)) x

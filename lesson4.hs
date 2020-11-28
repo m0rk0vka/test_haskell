@@ -13,7 +13,7 @@ matMul :: Num a => [[a]] -> [[a]] -> [[a]]
 matMul x y =
     let
         col m = [x | x:xs <- m]
-        rests m = [xs | x:xs <- m,length(xs) > 0 ]
+        rests m = [xs | x:xs <- m, length(xs) > 0 ]
         rowMulMat r []  = []
         rowMulMat r m   = sum(zipWith (*) r (col m)):(rowMulMat r (rests m))
     in case x of

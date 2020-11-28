@@ -12,5 +12,5 @@ wipe1(x:xs)
     | temp == [] = x:wipe1(xs)
     | otherwise = wipe1(temp1)
     where 
-        temp = [a|a <-xs,a == x]
+        temp = [a|a <- xs, a == x]
         temp1 = [a|a <- xs, a /= x]
