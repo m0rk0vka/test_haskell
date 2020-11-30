@@ -10,12 +10,25 @@ detMat ((x:xs):xss) = x * (-1)^(length(xss) - length(xs) + 2) * detMat[delN (len
             | otherwise = y:delN (i-1) ys
 
 
-inverseMat :: [[Double]] -> [[Double]]
-inverseMat x = mul x 0
+inverseMat :: [[Float]] -> [[Float]]
+inverseMat x 
+    | not check = error "It's not a square matrix"
+    | count_det == 0 = error "The determinant is 0. The system has an infinite set of solutions."
+    | otherwise = mul x 0
     where
+        len = length(x)
+        count_det = det x
+        check = check_i 0
+        check_i i = 
+            let
+                a 
+                    | i < len - 1 = check_i (i+1)
+                    | otherwise = True
+            in a && (length(x!!i) == len)
+
         mul x i
-            | i < length(x)-1 = (map (\c -> c * (1 / (det x))) ((attach x)!!i)):(mul x (i+1))
-            | otherwise = [map (\c -> c * (1 / (det x))) ((attach x)!!i)]
+            | i < length(x)-1 = (map (\c -> c  / count_det) ((attach (trans x))!!i)):(mul x (i+1))
+            | otherwise = [map (\c -> c / count_det) ((attach (trans x))!!i)]
 
         det [[x]] = x
         det [[a,b],[c,d]] = a * d - c * b
@@ -23,15 +36,16 @@ inverseMat x = mul x 0
         det ((x:xs):xss) = x * (-1)^(length(xss) - length(xs) 
                 + 2) * detMat[delN (length(xss) - length(xs)) y | y <- xss] + detMat((xs):xss)
 
+        trans x = foldr1 (zipWith (++)) (map ( map (\ y -> [y]) ) x)
+
         attach x = attach1 x 0
         attach1 x i 
-            | i < length(x) - 1 = (attach2 x i 0):(attach1 x (i+1))
+            | i < len - 1 = (attach2 x i 0):(attach1 x (i+1))
             | otherwise = [attach2 x i 0]
         attach2 x i j
-            | j < length(x!!i) - 1 = (((-1)^(length(delNN i x) - length([x!!i!!k | k <- [0..(length(x!!i))], k /= j]) + 2) * det[(delN (length(delNN i x) - length([x!!i!!k | k <- [0..(length(x!!i))], k /= j])) y) | y <- (delNN i x)]):(attach2 x i (j+1)))
-            | otherwise = [(-1)^(length(delNN i x) - length([x!!i!!k | k <- [0..(length(x!!i))], k /= j]) + 2) * det[(delN (length(delNN i x) - length([x!!i!!k | k <- [0..(length(x!!i))], k /= j])) y) | y <- (delNN i x)]]
+            | j < length(x!!i) - 1 = (((-1)^(i + j + 2) * det[delN j y | y <- (delNN i x)]):(attach2 x i (j+1)))
+            | otherwise = [(-1)^(i + j + 2) * det[delN j y | y <- (delNN i x)]]
             
-        
         delN i (y:ys)
             | i == 0    = ys
             | otherwise = y:delN (i-1) ys
