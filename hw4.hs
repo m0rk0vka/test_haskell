@@ -18,7 +18,7 @@ determinant x
             in a && (length(x!!i) == len)
 
         det [[a,b], [c,d]] = a*d-b*c
-        det x = sum ( map (\c -> ((x !! 0)!!c)*(sgn c)*(minor x c))  [0..(len-1)])
+        det x = sum (map (\c -> ((x !! 0)!!c)*(sgn c)*(minor x c))  [0..(len-1)])
 
         sgn c
             | c `mod` 2 == 0 = 1.0
